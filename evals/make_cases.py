@@ -1,6 +1,6 @@
 """Generate `claude plugin eval` cases from the skill-creator eval data in this directory.
 
-    python3 plugins/proof-skills/evals/make_cases.py      # rewrites cases/ from scratch
+    python3 evals/make_cases.py                           # rewrites cases/ from scratch
 
 Sources (the single source of truth for both harnesses):
   triggers/make_trigger_sets.py  -> cases/trigger/<skill>/<nn>/   (80 cases, cheap)

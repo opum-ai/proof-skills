@@ -22,7 +22,7 @@ Ship a new plugin version that users receive through `/plugin update`.
 ## Steps
 
 1. Choose the version (semver). Skill-behavior changes are a minor bump; fixes are a patch.
-2. Bump it in `plugins/proof-skills/.claude-plugin/plugin.json`. The marketplace entry lives
+2. Bump it in `.claude-plugin/plugin.json`. The marketplace entry lives
    in `opum-marketplace`, and step 7 repins it.
 3. When bumping toolchains, change `lean-toolchain` and the plausible `rev` together
    (both the patterns and the template), and `TLA_VERSION` in `setup_tla.sh`. Then update the
@@ -30,8 +30,8 @@ Ship a new plugin version that users receive through `/plugin update`.
 4. Verify:
    ```bash
    scripts/verify-assets.sh
-   for s in plugins/proof-skills/skills/*; do python3 <skill-creator>/scripts/quick_validate.py $s; done
-   claude plugin validate ./plugins/proof-skills
+   for s in skills/*; do python3 <skill-creator>/scripts/quick_validate.py $s; done
+   claude plugin validate .
    lore check
    ```
 5. For skill-text changes, run at least one eval iteration ([Run skill evals](run-skill-evals.md))

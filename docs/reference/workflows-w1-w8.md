@@ -11,7 +11,7 @@ generated:
 # Workflows W1–W8
 
 The canonical, agent-facing version is
-`plugins/proof-skills/skills/formal-verify/references/workflows.md`. This page is the
+`skills/formal-verify/references/workflows.md`. This page is the
 human-facing overview.
 
 ## Details

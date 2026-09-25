@@ -45,4 +45,4 @@ fi
 line="${EXTRA}export PATH=\"$(IFS=:; echo "${PATHS[*]:-}")\${PATH:+:\$PATH}\"; export ELAN_HOME=\"\$HOME/.elan\""
 for f in .zshenv .zshrc .bashrc .bash_profile .profile; do echo "$line" >> "$HOME/$f"; done
 [ -e "$HOME/.cache/proof-skills/tla2tools.jar" ] || {
-  echo "missing TLA+ tools: run plugins/proof-skills/skills/tlaplus-model/scripts/setup_tla.sh --with-jre first" >&2; exit 1; }
+  echo "missing TLA+ tools: run skills/tlaplus-model/scripts/setup_tla.sh --with-jre first" >&2; exit 1; }

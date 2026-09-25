@@ -10,7 +10,7 @@
 # and elan/lake on PATH for the Lean part.
 set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SK="$ROOT/plugins/proof-skills/skills"
+SK="$ROOT/skills"
 TLC="$SK/tlaplus-model/scripts/tlc.sh"
 P="$SK/tlaplus-model/assets/patterns"
 MODE="${1:-all}"

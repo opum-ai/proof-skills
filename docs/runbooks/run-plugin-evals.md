@@ -20,8 +20,8 @@ real plugin, as a user would install it, and can compare against a no-plugin bas
 [Run skill evals](run-skill-evals.md) covers the deeper skill-creator loop, in which graders
 re-run every model check.
 
-The cases live in `plugins/proof-skills/evals/cases/` and are generated. Do not edit them
-by hand. Edit the sources, then run `python3 plugins/proof-skills/evals/make_cases.py`:
+The cases live in `evals/cases/` and are generated. Do not edit them
+by hand. Edit the sources, then run `python3 evals/make_cases.py`:
 
 | Suite | Tag | Cases | Source | Graders |
 |---|---|---|---|---|
@@ -36,7 +36,7 @@ by hand. Edit the sources, then run `python3 plugins/proof-skills/evals/make_cas
 - **Trigger suite.** Nothing else. Each scaffold writes the stub monorepo from
   `evals/triggers/make_trigger_root.py`.
 - **Bug-hunt suite.**
-  - `plugins/proof-skills/skills/tlaplus-model/scripts/setup_tla.sh --with-jre` must have
+  - `skills/tlaplus-model/scripts/setup_tla.sh --with-jre` must have
     been run once.
   - elan (for Lean), plus the fixture languages: Python 3 with pytest, Node 20+, Go, Rust.
   - The run's Bash sandbox cannot read your real home or reach the network, so symlinks and
@@ -52,12 +52,12 @@ by hand. Edit the sources, then run `python3 plugins/proof-skills/evals/make_cas
 
 ## Steps
 
-Run these from the repo root. From inside `plugins/proof-skills/`, use `.` as the target instead.
+Run these from the repo root, which is the plugin root, so the target is `.`.
 
 1. Trigger suite, with the plugin only. At the default 2 runs per case with `-j 8`, all
    80 cases take about 17 minutes and cost about $25. `--runs 1` halves the cost.
    ```bash
-   claude plugin eval plugins/proof-skills --tag trigger --scaffold --ablation none -j 8 --threshold 0
+   claude plugin eval . --tag trigger --scaffold --ablation none -j 8 --threshold 0
    ```
    Use `--case 'trigger-lean-model-*'` to run one skill's set. The glob accepts `*` only, not
    `?` or `[...]`. Each should-fire case scores 1.0 when the intended skill fires. It scores
@@ -66,12 +66,12 @@ Run these from the repo root. From inside `plugins/proof-skills/`, use `.` as th
    so a baseline arm adds cost and no information.
 2. Bug-hunt suite, with and without the plugin (20–40 minutes per run):
    ```bash
-   claude plugin eval plugins/proof-skills --tag bughunt --scaffold \
+   claude plugin eval . --tag bughunt --scaffold \
      --allow-tools Bash Write Edit --runs 1 -j 5 --threshold 0
    ```
    The report's `Δ` column is the plugin's lift over the baseline. `z3-fired-*` is a
    with-arm indicator only, and is not part of the score.
-3. Results go to `plugins/proof-skills/evals/results/<timestamp>/` (git-ignored), with
+3. Results go to `evals/results/<timestamp>/` (git-ignored), with
    `aggregate-result.json` and `report.html`. `--json <file>` also writes the full result.
 4. For CI, add `--trust-plugin` and a real `--threshold`, for example 0.8 for the trigger
    suite. The default threshold of 1.0 fails on any single miss.
@@ -83,5 +83,5 @@ Lean builds and the tests. Treat a bug-hunt score as a regression signal, and us
 
 ## Rollback
 
-`rm -r plugins/proof-skills/evals/results`. Nothing else is written outside the throwaway
+`rm -r evals/results`. Nothing else is written outside the throwaway
 workspaces. The toolchains are clones, so a run cannot change your real installs.

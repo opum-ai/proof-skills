@@ -21,7 +21,7 @@ Give an agent a dependency-light Lean 4 kit to do three things:
 - **prove for all sizes:** an inductive invariant, lifted over reachability;
 - **stay honest:** a trust audit, a non-vacuity witness, and differential testing against production.
 
-Location: `plugins/proof-skills/skills/lean-model/`.
+Location: `skills/lean-model/`.
 
 ## Acceptance criteria
 

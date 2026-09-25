@@ -15,8 +15,15 @@ generated:
 ## Status
 
 Superseded by [ADR 0006](0006-distribute-through-the-opum-marketplace.md) (2026-09-25): the
-plugin now ships through Opum AI's public opum marketplace. The plugin layout below still stands.
-The same-repo `marketplace.json` has been removed.
+plugin now ships through Opum AI's public opum marketplace. The same-repo `marketplace.json` has
+been removed.
+
+The plugin layout below is superseded too. v0.1.0 shipped it, with the plugin in
+`plugins/proof-skills/`. From v0.1.1 the plugin lives at the repository root
+(`.claude-plugin/plugin.json`, `skills/`, `evals/`); ADR 0006 records why. The Decision section
+below is the layout as accepted on 2026-09-22 and is left as written. What still stands from it:
+one plugin named `proof-skills`, skills namespaced as `/proof-skills:<name>`, and
+`.claude/skills/<name>` symlinks to the shipped skills, which now point at `skills/<name>`.
 
 Originally accepted 2026-09-22.
 

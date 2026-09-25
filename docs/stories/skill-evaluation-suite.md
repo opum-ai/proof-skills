@@ -24,7 +24,7 @@ skill-creator's: with-skill and baseline runs, graded assertions, a benchmark, a
 
 ## Acceptance criteria
 
-- [x] Five fixtures in `plugins/proof-skills/evals/fixtures/`, each with a planted bug that its existing tests miss:
+- [x] Five fixtures in `evals/fixtures/`, each with a planted bug that its existing tests miss:
 
   | Fixture | Language | Bug class |
   |---|---|---|
@@ -33,11 +33,11 @@ skill-creator's: with-skill and baseline runs, graded assertions, a benchmark, a
   | `go-dag` | Go | readiness counts Running dependencies as satisfied |
   | `py-orders` | Python threads | belt-and-braces lock + CAS + post-check: simplification target |
   | `rust-pool` | Rust std threads | capacity check-then-act (safety) + lost wakeup (liveness) |
-- [x] `plugins/proof-skills/evals/evals.json` has the prompt in the user's words and the expected output for each fixture.
+- [x] `evals/evals.json` has the prompt in the user's words and the expected output for each fixture.
 - [x] Iteration-1 benchmark (pass rate, time, tokens; with and without skill) is recorded in
   `evals-workspace/iteration-1/benchmark.md`.
 - [x] The human review in the eval viewer is complete, and its feedback is folded into iteration 2.
-- [x] Trigger evals (20 queries per skill in `plugins/proof-skills/evals/triggers/`) are run through skill-creator's
+- [x] Trigger evals (20 queries per skill in `evals/triggers/`) are run through skill-creator's
   description optimizer. The best description on the held-out split is applied.
 
 ## Tasks
@@ -56,7 +56,7 @@ skill-creator's: with-skill and baseline runs, graded assertions, a benchmark, a
 
 These evals check whether each description makes Claude load the skill for the right
 requests, and skip it for near misses. There are 20 queries per skill in
-`plugins/proof-skills/evals/triggers/`. skill-creator's `run_loop` splits them 60/40 into train and held-out
+`evals/triggers/`. skill-creator's `run_loop` splits them 60/40 into train and held-out
 test. It proposes up to 3 descriptions and keeps the one that scores best on test. Each
 score counts the queries that behave correctly (triggered on at least half their runs, or
 correctly skipped).
@@ -82,7 +82,7 @@ descriptions:
 3. Parallel workers share `.claude/commands/`. The model may load another worker's
    identical copy of the skill.
 
-`plugins/proof-skills/evals/triggers/run_eval-keep-scanning.patch` fixes items 1 and 3.
+`evals/triggers/run_eval-keep-scanning.patch` fixes items 1 and 3.
 
 ### `claude plugin eval` trigger suite (2026-09-23, 80 cases, 2 runs each)
 

@@ -1,6 +1,6 @@
 """Generate trigger-eval query sets (should_trigger true/false) for each proof-skills skill.
 
-Run: python3 plugins/proof-skills/evals/triggers/make_trigger_sets.py   (writes <skill>.json next to this file)
+Run: python3 evals/triggers/make_trigger_sets.py   (writes <skill>.json next to this file)
 """
 import json
 import pathlib

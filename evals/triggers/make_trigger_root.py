@@ -6,7 +6,7 @@ for the code instead of loading a skill, so every positive query scores as a mis
 script writes a short, plausible file for every path the queries mention, positives and
 near-miss negatives alike, so the model's decision rests on the description.
 
-Run: python3 plugins/proof-skills/evals/triggers/make_trigger_root.py <dir>    (creates <dir>/.claude too,
+Run: python3 evals/triggers/make_trigger_root.py <dir>    (creates <dir>/.claude too,
      unless --no-claude-dir; the `claude plugin eval` trigger cases use that form)
 """
 import pathlib

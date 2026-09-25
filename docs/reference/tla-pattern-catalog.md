@@ -10,7 +10,7 @@ generated:
 
 # TLA+ pattern catalog
 
-Files are in `plugins/proof-skills/skills/tlaplus-model/assets/patterns/<Name>/`. The
+Files are in `skills/tlaplus-model/assets/patterns/<Name>/`. The
 agent-facing guide is `tlaplus-model/references/patterns.md`. Results were re-verified with
 `scripts/verify-assets.sh` on TLC 2026.09 (tla2tools v1.8.0 release jar).
 

@@ -27,7 +27,7 @@ whether it succeeds in practice:
 It routes the tool-specific work to [tlaplus-model](tlaplus-model-skill.md),
 [lean-model](lean-model-skill.md), and [proof-simplify](proof-simplify-skill.md).
 
-Location: `plugins/proof-skills/skills/formal-verify/`.
+Location: `skills/formal-verify/`.
 
 ## Acceptance criteria
 

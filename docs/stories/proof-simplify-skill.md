@@ -20,7 +20,7 @@ Turn verified models into smaller, clearer code, without trading away safety. Co
 without proofs defends against states that cannot happen. Once a model proves what is always
 true, those defenses can go, provided the proof and its assumptions really cover them.
 
-Location: `plugins/proof-skills/skills/proof-simplify/`.
+Location: `skills/proof-simplify/`.
 
 ## Acceptance criteria
 

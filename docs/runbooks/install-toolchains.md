@@ -25,19 +25,19 @@ Quint or Apalache. Nothing here needs sudo, and everything lands in user directo
 
 1. See what is already present:
    ```bash
-   plugins/proof-skills/skills/formal-verify/scripts/doctor.sh
+   skills/formal-verify/scripts/doctor.sh
    ```
 2. TLA+:
    ```bash
-   plugins/proof-skills/skills/tlaplus-model/scripts/setup_tla.sh            # uses Java on PATH
-   plugins/proof-skills/skills/tlaplus-model/scripts/setup_tla.sh --with-jre # no Java? portable Temurin 21
+   skills/tlaplus-model/scripts/setup_tla.sh            # uses Java on PATH
+   skills/tlaplus-model/scripts/setup_tla.sh --with-jre # no Java? portable Temurin 21
    ```
    The tools install into `~/.cache/proof-skills`. Override the location with
    `PROOF_SKILLS_TOOLS=/path` (the same variable tells `tlc.sh` where to look). Add
    `--nightly` for the nightly jar; the pinned release is the default.
 3. Lean 4:
    ```bash
-   plugins/proof-skills/skills/lean-model/scripts/setup_lean.sh
+   skills/lean-model/scripts/setup_lean.sh
    export PATH="$HOME/.elan/bin:$PATH"
    ```
    Each project's `lean-toolchain` selects the exact version (v4.34.0 for the shipped
@@ -47,7 +47,7 @@ Quint or Apalache. Nothing here needs sudo, and everything lands in user directo
    - Apalache: download from https://apalache-mc.org (Quint's `verify` also fetches it automatically)
 5. Confirm:
    ```bash
-   plugins/proof-skills/skills/formal-verify/scripts/doctor.sh   # every required row "ok"
+   skills/formal-verify/scripts/doctor.sh   # every required row "ok"
    scripts/verify-assets.sh                                      # 27 TLC checks + Lean audit pass
    ```
 

@@ -22,7 +22,7 @@ check it with TLC. The skill supplies:
 - a wrapper that turns TLC output into a code-mapped trace table, and
 - rules that stop a model from passing vacuously.
 
-Location: `plugins/proof-skills/skills/tlaplus-model/`.
+Location: `skills/tlaplus-model/`.
 
 ## Acceptance criteria
 

@@ -2,7 +2,7 @@
   "name": "proof-skills",
   "displayName": "Proof Skills",
   "description": "Formal verification for real codebases: find concurrency, data-flow, state-management, and graph bugs with TLA+ and Lean 4, reproduce and fix them, simplify code with proofs, and publish results as Artifact reports.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Opum AI",
     "url": "https://github.com/opum-ai"

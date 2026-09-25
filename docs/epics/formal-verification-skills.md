@@ -65,7 +65,7 @@ Out of scope:
 ## Status
 
 All six stories are done: Quest tasks PS-1 to PS-8, rolled up by `lore sync`. The plugin
-is at v0.1.0. It is owned by Opum AI and MIT-licensed; its source is the public repo
+is at v0.1.1. It is owned by Opum AI and MIT-licensed; its source is the public repo
 [opum-ai/proof-skills](https://github.com/opum-ai/proof-skills), and it is distributed
 through Opum AI's public [opum marketplace](https://github.com/opum-ai/opum-marketplace)
 (see ADR 0006).

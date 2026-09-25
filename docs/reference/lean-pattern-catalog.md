@@ -10,7 +10,7 @@ generated:
 
 # Lean pattern catalog
 
-Files are in `plugins/proof-skills/skills/lean-model/assets/lean-patterns/`. The agent-facing
+Files are in `skills/lean-model/assets/lean-patterns/`. The agent-facing
 guide is `lean-model/references/patterns.md`. Built on Lean 4.34.0 with plausible v4.34.0.
 `check_trust.sh` reports 24 theorems, 0 with trust problems (standard axioms only, no
 `sorry`, no `native_decide`).

@@ -10,7 +10,7 @@ generated:
 
 # Findings schema
 
-The authoritative JSON Schema is `plugins/proof-skills/skills/formal-verify/assets/findings.schema.json`.
+The authoritative JSON Schema is `skills/formal-verify/assets/findings.schema.json`.
 
 ## Details
 

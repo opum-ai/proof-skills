@@ -5,4 +5,4 @@ evals-workspace/
 __pycache__/
 .DS_Store
 states/
-plugins/proof-skills/evals/results/
+evals/results/

@@ -35,7 +35,7 @@ every future user. Run this before each release, after any toolchain bump, and i
    - 1 Lean build with trust audit (24 theorems, 0 problems).
 3. On a failure, run the single case to see the log:
    ```bash
-   plugins/proof-skills/skills/tlaplus-model/scripts/tlc.sh <Spec>.tla --config <cfg>.cfg
+   skills/tlaplus-model/scripts/tlc.sh <Spec>.tla --config <cfg>.cfg
    ```
    A `MC_bug`/`MC_sanity` config that *passes* means a check has lost its teeth. Treat that
    as a release blocker.

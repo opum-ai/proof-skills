@@ -11,7 +11,7 @@ generated:
 # State of the art in agent-driven formal verification
 
 Research carried out on 2026-09-22 for this project. The agent-facing condensed version is
-`plugins/proof-skills/skills/formal-verify/references/evidence.md`.
+`skills/formal-verify/references/evidence.md`.
 
 ## Details
 
