@@ -1,0 +1,393 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Formal verification findings",
+  "description": "Machine-readable results of a proof-skills workflow. Drives the Artifact report.",
+  "type": "object",
+  "required": [
+    "concern",
+    "workflow",
+    "generated_at",
+    "summary",
+    "properties",
+    "findings"
+  ],
+  "properties": {
+    "concern": {
+      "type": "string",
+      "description": "kebab-case concern id, matches formal/<concern>/"
+    },
+    "workflow": {
+      "enum": [
+        "W1",
+        "W2",
+        "W3",
+        "W4",
+        "W5",
+        "W6",
+        "W7",
+        "W8"
+      ]
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "repo_commit": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-sentence verdict including bounds"
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "modeled": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "abstracted": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "out_of_scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "properties": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "kind",
+          "result",
+          "tool"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "invariant",
+              "action-property",
+              "liveness",
+              "refinement",
+              "theorem",
+              "bounded-check"
+            ]
+          },
+          "statement": {
+            "type": "string",
+            "description": "Formal text, quoted from the spec"
+          },
+          "meaning": {
+            "type": "string",
+            "description": "Plain-English meaning"
+          },
+          "source": {
+            "type": "string",
+            "description": "Where the requirement came from (doc, issue, commit)"
+          },
+          "frozen": {
+            "type": "boolean"
+          },
+          "result": {
+            "enum": [
+              "holds",
+              "violated",
+              "proven",
+              "sorry",
+              "timeout",
+              "not-run"
+            ]
+          },
+          "tool": {
+            "type": "string",
+            "description": "e.g. TLC 1.8.0, Apalache 0.47, Lean 4.x"
+          },
+          "bounds": {
+            "type": "string",
+            "description": "e.g. Workers={w1,w2}, Jobs={j1,j2,j3}, MaxRetry=2; or 'unbounded'"
+          },
+          "evidence": {
+            "type": "string",
+            "description": "Path of the saved log for this check"
+          }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "severity",
+          "status",
+          "property"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "F1, F2, ..."
+          },
+          "title": {
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "status": {
+            "enum": [
+              "confirmed",
+              "suspected",
+              "refuted",
+              "fixed"
+            ]
+          },
+          "property": {
+            "type": "string",
+            "description": "Name of the violated property"
+          },
+          "story": {
+            "type": "string",
+            "description": "Domain-language narrative of the trace"
+          },
+          "trace": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "step",
+                "action"
+              ],
+              "properties": {
+                "step": {
+                  "type": "integer"
+                },
+                "actor": {
+                  "type": "string"
+                },
+                "action": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "string",
+                  "description": "file:line from CORRESPONDENCE.md"
+                },
+                "changed": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "violation": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "reproduction": {
+            "type": "object",
+            "properties": {
+              "test": {
+                "type": "string",
+                "description": "path::test_name"
+              },
+              "result_before_fix": {
+                "enum": [
+                  "fails",
+                  "passes",
+                  "not-reproduced"
+                ]
+              },
+              "result_after_fix": {
+                "enum": [
+                  "fails",
+                  "passes",
+                  "not-run"
+                ]
+              }
+            }
+          },
+          "fix": {
+            "type": "object",
+            "properties": {
+              "summary": {
+                "type": "string"
+              },
+              "diff": {
+                "type": "string"
+              },
+              "pr": {
+                "type": "string"
+              },
+              "model_recheck": {
+                "enum": [
+                  "passes",
+                  "fails",
+                  "not-run"
+                ]
+              },
+              "mutation_check": {
+                "enum": [
+                  "fails-as-expected",
+                  "unexpectedly-passes",
+                  "not-run"
+                ]
+              }
+            }
+          },
+          "diagram": {
+            "type": "object",
+            "description": "Optional graph_svg.py spec (nodes, edges, highlight, steps) for concerns with a shape"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Paths of saved logs backing this finding (formal/<concern>/evidence/...)"
+          }
+        }
+      }
+    },
+    "simplifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "change",
+          "justification",
+          "reverified"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "S1, S2, ..."
+          },
+          "change": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "justification": {
+            "type": "string",
+            "description": "The invariant or theorem that makes the removed code redundant"
+          },
+          "relies_on_assumptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reverified": {
+            "enum": [
+              "passes",
+              "fails",
+              "not-run"
+            ]
+          },
+          "loc_delta": {
+            "type": "integer"
+          },
+          "status": {
+            "enum": [
+              "proposed",
+              "applied",
+              "rejected"
+            ]
+          }
+        }
+      }
+    },
+    "trust_base": {
+      "type": "object",
+      "properties": {
+        "tla": {
+          "type": "object",
+          "properties": {
+            "tool_version": {
+              "type": "string"
+            },
+            "states_generated": {
+              "type": "integer"
+            },
+            "distinct_states": {
+              "type": "integer"
+            },
+            "depth": {
+              "type": "integer"
+            },
+            "sanity_checks": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "lean": {
+          "type": "object",
+          "properties": {
+            "toolchain": {
+              "type": "string"
+            },
+            "axioms": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "sorry_count": {
+              "type": "integer"
+            },
+            "native_decide_used": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "rerun": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Exact shell commands"
+    },
+    "next_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

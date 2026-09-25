@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: bughunt-job-lease-stale-worker
+expected_outcome: 'Models lease expiry as an environment action, finds that a stale worker (lease expired, job reclaimed) still calls complete() and overwrites the result, and that side effects run twice. Explains that leases give at-least-once processing so exactly-once side effects are impossible without idempotency. Proposes fencing token / owner check on complete (UPDATE ... WHERE owner=$ AND token=$). Re-verifies the fix; HTML report.'
+context:
+  scaffold_script: scaffold.sh

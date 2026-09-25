@@ -1,0 +1,82 @@
+[
+  {
+    "query": "prove in Lean that our interval merge function in lib/intervals.py never loses coverage \u2014 I'll accept a model of it, just keep the model faithful",
+    "should_trigger": true
+  },
+  {
+    "query": "TLC passed for 3 nodes but I need a proof that the leader lease invariant holds for any number of nodes. can we do that in Lean?",
+    "should_trigger": true
+  },
+  {
+    "query": "my lean proof is stuck: grind fails on the dispatch case of inv_step and leaves a goal with an awaiting task whose key isn't in seen. what do I do",
+    "should_trigger": true
+  },
+  {
+    "query": "build an executable Lean model of our pricing rules engine and differential-test it against the production Java implementation",
+    "should_trigger": true
+  },
+  {
+    "query": "lake build succeeds but I want to make sure there's no sorry or sneaky axiom anywhere in formal/lean before we claim it's verified",
+    "should_trigger": true
+  },
+  {
+    "query": "prove that the topological sort in scheduler/topo.rs always produces an order consistent with the edges, for every DAG",
+    "should_trigger": true
+  },
+  {
+    "query": "set up a Lean 4 project (no mathlib please, it's huge) for modeling our state machine and proving transitions stay within the allowed table",
+    "should_trigger": true
+  },
+  {
+    "query": "model the retry logic in our webhook dispatcher as a transition system in Lean and prove at-most-once delivery by induction",
+    "should_trigger": true
+  },
+  {
+    "query": "use lean to find a counterexample input for my batching function \u2014 i suspect it loses the last partial batch",
+    "should_trigger": true
+  },
+  {
+    "query": "check this Lean proof uses native_decide and tell me whether that's acceptable for our certification claim",
+    "should_trigger": true
+  },
+  {
+    "query": "help me with my real analysis homework in Lean mathlib \u2014 epsilon delta continuity proof",
+    "should_trigger": false
+  },
+  {
+    "query": "write a TLA+ spec for the paxos acceptor",
+    "should_trigger": false
+  },
+  {
+    "query": "what's the difference between Coq and Isabelle",
+    "should_trigger": false
+  },
+  {
+    "query": "install the Lean VS Code extension on my windows laptop",
+    "should_trigger": false
+  },
+  {
+    "query": "write a python function that checks if a list is sorted and add doctests",
+    "should_trigger": false
+  },
+  {
+    "query": "formalize the proof that there are infinitely many primes",
+    "should_trigger": false
+  },
+  {
+    "query": "refactor the rust borrow checker errors in src/graph.rs",
+    "should_trigger": false
+  },
+  {
+    "query": "translate this Haskell code to Lean syntax, it's a parser combinator library",
+    "should_trigger": false
+  },
+  {
+    "query": "prove in Dafny that my binary search is correct",
+    "should_trigger": false
+  },
+  {
+    "query": "explain dependent types like I'm a backend engineer",
+    "should_trigger": false
+  }
+]

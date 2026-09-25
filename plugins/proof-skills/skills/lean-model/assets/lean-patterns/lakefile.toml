@@ -1,0 +1,16 @@
+name = "proof_patterns"
+version = "0.1.0"
+defaultTargets = ["ProofPatterns"]
+
+[[lean_lib]]
+name = "ProofPatterns"
+
+[[lean_exe]]
+name = "replay"
+root = "Replay"
+
+# Property-based testing. Pin the tag that matches lean-toolchain.
+[[require]]
+name = "plausible"
+git = "https://github.com/leanprover-community/plausible"
+rev = "v4.34.0"

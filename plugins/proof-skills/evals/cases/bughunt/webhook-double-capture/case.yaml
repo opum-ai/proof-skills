@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: bughunt-webhook-double-capture
+expected_outcome: 'Models concurrent deliveries of the same event across await points (TLA+ and/or Lean), finds the check-then-act race (seen() then capture() then mark()), reproduces it with a deterministic asyncio test, fixes with an atomic claim before the side effect, re-verifies (fix passes, fix-off fails), and writes an HTML report with the trace, bounds, and trust base.'
+context:
+  scaffold_script: scaffold.sh

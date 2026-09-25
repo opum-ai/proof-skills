@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: bughunt-rust-pool-capacity-and-hang
+expected_outcome: 'Finds (1) check-then-act on in_use across two separate lock acquisitions -> more than max checked out (safety, invariant violation), and (2) lost wakeup: acquire checks then re-locks and waits (notification can land between), and release notifies before decrementing -> waiter sleeps forever (deadlock/liveness). Fix: one mutex guarding the count (and idle list), check-and-increment under one guard, while-loop condvar wait on that same guard, decrement then notify. Re-verifies safety and deadlock-freedom/liveness; adds a Rust regression test (threads + barriers, or loom/shuttle if available); cargo test passes; HTML report.'
+context:
+  scaffold_script: scaffold.sh

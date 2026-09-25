@@ -1,0 +1,33 @@
+# lore configuration — committed, team-shared knobs for `lore sync` / `lore check`.
+# Every setting is OPTIONAL: with this file absent, or every line below commented,
+# lore uses the documented defaults. See docs/adr/0013-lore-state-directory.md.
+
+# [reconcile]
+# Status roll-up policy applied by `lore sync` / `lore check`.
+# mode = "task-rollup"   # all tasks Done -> done; any In Progress -> in-progress; else todo
+
+# [validate]
+# external_links = false       # external-link liveness is opt-in only
+# promote_portability = false  # keep the portability lint a warning, not an error
+
+# [confluence]
+# Non-secret publish target settings (the one-way publish adapter is deferred to v2).
+# The API token is environment-only: set $LORE_CONFLUENCE_TOKEN, never store it here.
+# base_url       = "https://yourorg.atlassian.net/wiki"
+# space          = "ENG"
+# parent_page_id = "98765"
+# format         = "storage"   # or "adf"
+
+# [tracker.jira]
+# Non-secret settings for the jira-cli tracker adapter. jira-cli owns the URL,
+# email, API token, HTTP transport, timeout, and Markdown/ADF conversion; run
+# `jira init --yes` in the project root instead of storing credentials here.
+# profile        = "work"       # optional; omit to use jira-cli's default profile
+# project        = "JT"
+# board          = "42"         # optional; retained for Jira-aware workflows
+# issue_type     = "Task"
+# default_labels = ["lore"]
+# status_flow    = ["To Do", "In Progress", "Done"]
+
+[tracker]
+backend = "quest"

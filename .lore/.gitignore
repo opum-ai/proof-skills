@@ -1,0 +1,2 @@
+# lore transient cache — recomputable, machine-local, never committed (ADR-0013).
+cache/

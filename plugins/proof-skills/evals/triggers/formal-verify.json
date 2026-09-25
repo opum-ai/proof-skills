@@ -1,0 +1,82 @@
+[
+  {
+    "query": "we keep getting duplicate emails from our notification worker, maybe 1 in 5k sends. its a python asyncio thing in services/notify/sender.py that checks redis for a sent-key then sends then sets the key. can you figure out formally whether it can double send and fix it",
+    "should_trigger": true
+  },
+  {
+    "query": "Can this race? Two pods run `reconcile()` in controllers/quota.go at the same time and both read the current usage from etcd before writing. I want a real answer, not a guess.",
+    "should_trigger": true
+  },
+  {
+    "query": "review PR #482 in our payments repo for concurrency issues \u2014 it changes the refund flow to use a background job and I'm nervous about double refunds",
+    "should_trigger": true
+  },
+  {
+    "query": "Our Kotlin inventory service sometimes oversells the last unit during flash sales. Stock check is `if (stock > 0) decrement()` in InventoryService.kt. Please model it and prove the fix.",
+    "should_trigger": true
+  },
+  {
+    "query": "I have a DAG runner in rust (crates/runner/src/sched.rs) that sometimes deadlocks when a task fails and gets retried. find out why with whatever formal tools make sense",
+    "should_trigger": true
+  },
+  {
+    "query": "before we build it: here's our design doc for leader election with leases in Postgres (docs/rfc/017-leader.md). check whether two leaders can ever be active at once",
+    "should_trigger": true
+  },
+  {
+    "query": "the spec in formal/cache-coherence/ was written 4 months ago and a bunch of code in cache/ changed since. is the model still accurate?",
+    "should_trigger": true
+  },
+  {
+    "query": "set up CI so the TLA+ models under specs/ run on every PR and fail the build if an invariant breaks",
+    "should_trigger": true
+  },
+  {
+    "query": "is `TokenBucket.take()` in lib/ratelimit.ts thread safe? it's called from worker_threads and I'm seeing more requests through than the limit allows",
+    "should_trigger": true
+  },
+  {
+    "query": "we lose messages occasionally in our kafka -> transform -> s3 pipeline when a pod restarts mid-batch. code is in pipeline/sink.py. help me find exactly where with a formal model",
+    "should_trigger": true
+  },
+  {
+    "query": "write a function that checks whether a directed graph has a cycle, in python, with tests",
+    "should_trigger": false
+  },
+  {
+    "query": "explain the difference between linearizability and serializability with examples",
+    "should_trigger": false
+  },
+  {
+    "query": "my pytest suite is flaky on CI only \u2014 tests/test_api.py::test_upload times out randomly. can you look at the fixture setup?",
+    "should_trigger": false
+  },
+  {
+    "query": "add a mutex around the counter in metrics.go so the race detector stops complaining",
+    "should_trigger": false
+  },
+  {
+    "query": "our postgres queries got slow after the last migration, EXPLAIN ANALYZE output attached, what index should I add",
+    "should_trigger": false
+  },
+  {
+    "query": "convert this Go worker pool to use errgroup instead of manual waitgroups",
+    "should_trigger": false
+  },
+  {
+    "query": "write hypothesis property-based tests for my JSON parser in parser/json.py",
+    "should_trigger": false
+  },
+  {
+    "query": "what's the best way to learn TLA+? recommend books or courses",
+    "should_trigger": false
+  },
+  {
+    "query": "design a rate limiter for our API gateway, sliding window, redis backed \u2014 just the architecture, we'll implement later",
+    "should_trigger": false
+  },
+  {
+    "query": "fix the type errors in src/scheduler.ts after upgrading to typescript 6",
+    "should_trigger": false
+  }
+]

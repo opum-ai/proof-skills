@@ -1,0 +1,12 @@
+name = "__pkg__"
+version = "0.1.0"
+defaultTargets = ["__PKG__"]
+
+[[lean_lib]]
+name = "__PKG__"
+
+# Property-based testing (optional). The tag must match lean-toolchain.
+[[require]]
+name = "plausible"
+git = "https://github.com/leanprover-community/plausible"
+rev = "v4.34.0"

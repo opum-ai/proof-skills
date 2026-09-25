@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: bughunt-dag-executor-all-graphs
+expected_outcome: 'Identifies ready() treating Running dependencies as satisfied; fixes to require Done; gives a counterexample on a 2-node graph; proves in Lean (unbounded, all dependency functions) that running steps only have Done dependencies, with #print axioms / no sorry; optionally TLC over all small DAGs; adds a Go regression test; HTML report.'
+context:
+  scaffold_script: scaffold.sh

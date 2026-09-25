@@ -1,0 +1,120 @@
+{
+  "skill_name": "proof-skills",
+  "evals": [
+    {
+      "id": 1,
+      "name": "webhook-double-capture",
+      "prompt": "The payment provider retries webhooks and every couple of weeks we see a double capture in prod, but all our tests pass. Can you formally verify app/payments.py (and whatever it touches) and find what's going on? Fix it if you find something.",
+      "fixture": "py-webhooks",
+      "expected_output": "Models concurrent deliveries of the same event across await points (TLA+ and/or Lean), finds the check-then-act race (seen() then capture() then mark()), reproduces it with a deterministic asyncio test, fixes with an atomic claim before the side effect, re-verifies (fix passes, fix-off fails), and writes an HTML report with the trace, bounds, and trust base.",
+      "assertions": [
+        "Identifies the root cause as check-then-act across await points: seen() check, then capture(), then mark(), letting concurrent deliveries of the same event both capture",
+        "A model checker or prover (TLC, Apalache, Quint, or Lean) was actually run and produced a counterexample for the original code",
+        "Adds a deterministic regression test (e.g. asyncio events/gates or gather of duplicate deliveries) that fails on the unchanged original code on the property assertion (not an API/signature error) and passes after the fix",
+        "Fix claims the dedup key atomically before the side effect (or uses an idempotency key at the gateway) rather than only adding sleeps/retries",
+        "Discusses the failure trade-off of claim-first (crash/exception between claim and capture) and handles or documents it",
+        "pytest passes after the fix",
+        "States explicit model bounds (e.g. number of actors/deliveries/workers/nodes) for every model-checking result, and distinguishes bounded results from unbounded proofs",
+        "Ran a sanity/non-vacuity check on the FIXED (or simplified) model itself \u2014 a must-fail invariant, reachability witness, or coverage run, not just a bug toggle \u2014 and saved its tool output",
+        "Mutation/bug-toggle check: the target property FAILS on the unfixed model and PASSES on the fixed one at the SAME bounds, with saved tool output for both",
+        "Provides a model-to-code mapping (model actions/functions linked to specific file:line locations in the repo)",
+        "Produces a machine-readable findings file (e.g. formal/findings.json) describing properties, results, and findings",
+        "Produces a report (report.html or equivalent returned report) containing: verdict with bounds, per-finding trace mapped to code, what was verified, assumptions/scope, trust base, and re-run commands",
+        "Every check the report claims (model runs, sanity checks, coverage, mapping check, test runs before/after) has a saved log file in the repo; nothing is claimed without a log"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "job-lease-stale-worker",
+      "prompt": "Can you prove our job queue never lets a job's result get clobbered or processed twice? Lease logic is in src/store.ts and src/worker.ts. I want an actual proof or a concrete counterexample, not more unit tests.",
+      "fixture": "ts-job-queue",
+      "expected_output": "Models lease expiry as an environment action, finds that a stale worker (lease expired, job reclaimed) still calls complete() and overwrites the result, and that side effects run twice. Explains that leases give at-least-once processing so exactly-once side effects are impossible without idempotency. Proposes fencing token / owner check on complete (UPDATE ... WHERE owner=$ AND token=$). Re-verifies the fix; HTML report.",
+      "assertions": [
+        "Identifies that a worker whose lease expired can still call complete() after another worker reclaimed the job, overwriting the result (complete() does not check owner)",
+        "Explains that lease-based claiming gives at-least-once processing, so side effects can run twice and exactly-once side effects need idempotency/fencing downstream",
+        "A model checker or prover was actually run and produced a concrete counterexample trace involving lease expiry and reclaim",
+        "Fix adds an ownership/fencing check to complete (e.g. WHERE owner = $worker AND token = $token, or a monotonically increasing token) and the stale path is rejected",
+        "Re-verifies the fixed model: result-clobber property holds with the fix",
+        "Adds or runs an executable test (node test runner or similar) reproducing the stale overwrite",
+        "States explicit model bounds (e.g. number of actors/deliveries/workers/nodes) for every model-checking result, and distinguishes bounded results from unbounded proofs",
+        "Ran a sanity/non-vacuity check on the FIXED (or simplified) model itself \u2014 a must-fail invariant, reachability witness, or coverage run, not just a bug toggle \u2014 and saved its tool output",
+        "Mutation/bug-toggle check: the target property FAILS on the unfixed model and PASSES on the fixed one at the SAME bounds, with saved tool output for both",
+        "Provides a model-to-code mapping (model actions/functions linked to specific file:line locations in the repo)",
+        "Produces a machine-readable findings file (e.g. formal/findings.json) describing properties, results, and findings",
+        "Produces a report (report.html or equivalent returned report) containing: verdict with bounds, per-finding trace mapped to code, what was verified, assumptions/scope, trust base, and re-run commands",
+        "Respects the user's 'not more unit tests': adds no new unit-test files to the repo's test suite; reproductions live outside it (e.g. formal/<concern>/repro/)",
+        "Addresses the SQL semantics of claim(): either models the READ COMMITTED subquery-UPDATE race (double claim / reopening a done job) or lists it as an explicit, flagged assumption in the report",
+        "Every check the report claims (model runs, sanity checks, coverage, mapping check, test runs before/after) has a saved log file in the repo; nothing is claimed without a log"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "dag-executor-all-graphs",
+      "prompt": "Our build graph executor (executor.go) occasionally starts a step before its dependency has finished. Find the bug, fix it, and give me a proof that the fixed scheduler respects dependencies for every possible graph, not just the ones in our tests.",
+      "fixture": "go-dag",
+      "expected_output": "Identifies ready() treating Running dependencies as satisfied; fixes to require Done; gives a counterexample on a 2-node graph; proves in Lean (unbounded, all dependency functions) that running steps only have Done dependencies, with #print axioms / no sorry; optionally TLC over all small DAGs; adds a Go regression test; HTML report.",
+      "assertions": [
+        "Identifies that ready() treats Running dependencies as satisfied (checks != Pending instead of == Done)",
+        "Fixes ready() to require every dependency to be Done",
+        "Provides a Lean proof (compiled, no sorry, axioms audited) that dependencies are respected for arbitrary dependency graphs / any number of steps",
+        "Produces a mechanical counterexample for the buggy readiness rule (TLC trace, Lean bfs/decide, or equivalent)",
+        "Adds a Go regression test with workers >= 2 that fails on the unchanged original code on the property assertion (not an API/signature error) and passes after the fix, run with go test -race",
+        "Notes the correspondence gap (Go code vs model is a manual transcription) or other unverified assumptions honestly",
+        "States explicit model bounds (e.g. number of actors/deliveries/workers/nodes) for every model-checking result, and distinguishes bounded results from unbounded proofs",
+        "Ran a sanity/non-vacuity check on the FIXED (or simplified) model itself \u2014 a must-fail invariant, reachability witness, or coverage run, not just a bug toggle \u2014 and saved its tool output",
+        "Mutation/bug-toggle check: the target property FAILS on the unfixed model and PASSES on the fixed one at the SAME bounds, with saved tool output for both",
+        "Provides a model-to-code mapping (model actions/functions linked to specific file:line locations in the repo)",
+        "Produces a machine-readable findings file (e.g. formal/findings.json) describing properties, results, and findings",
+        "Produces a report (report.html or equivalent returned report) containing: verdict with bounds, per-finding trace mapped to code, what was verified, assumptions/scope, trust base, and re-run commands",
+        "Report renders the dependency graph of the counterexample as an inline diagram (SVG) with the violating edge/step highlighted",
+        "Every check the report claims (model runs, sanity checks, coverage, mapping check, test runs before/after) has a saved log file in the repo; nothing is claimed without a log"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "orders-simplify-belt-and-braces",
+      "prompt": "cancel_order in orders/service.py has a row lock AND a conditional update AND a post-check, all bolted on after an old incident. Use formal methods to work out what we can safely simplify here, then do it.",
+      "fixture": "py-orders",
+      "expected_output": "Models current code (lock + CAS + post-check) and the webhook path that never takes the lock. Shows the lock alone does not prevent paid->cancelled and CAS alone suffices (lock removable), the post-check is dead because cancelled is terminal, and the 'changed concurrently' branch is reachable (keep). Proves the simplified version preserves the transition property (re-check and/or refinement), applies the simplification, keeps tests green, and reports simplifications with justifications and assumptions.",
+      "assertions": [
+        "Shows (with a model-check or proof) that the row lock alone does not prevent paid -> cancelled because the payment webhook path does not take the lock",
+        "Shows (with a model-check or proof) that the conditional update alone preserves the allowed-transition property",
+        "Identifies the post-check as dead code because cancelled is terminal, with formal justification, and removes it",
+        "Removes the row lock from cancel_order while keeping the conditional update",
+        "Re-verifies the simplified code/model (re-check, refinement, or equivalence proof) after the change",
+        "Lists the assumptions the simplification relies on (e.g. all status writers use conditional updates; no reinstate path)",
+        "pytest passes after the simplification",
+        "States explicit model bounds (e.g. number of actors/deliveries/workers/nodes) for every model-checking result, and distinguishes bounded results from unbounded proofs",
+        "Ran a sanity/non-vacuity check on the FIXED (or simplified) model itself \u2014 a must-fail invariant, reachability witness, or coverage run, not just a bug toggle \u2014 and saved its tool output",
+        "Mutation/bug-toggle check: the target property FAILS on the unfixed model and PASSES on the fixed one at the SAME bounds, with saved tool output for both",
+        "Provides a model-to-code mapping (model actions/functions linked to specific file:line locations in the repo)",
+        "Produces a machine-readable findings file (e.g. formal/findings.json) describing properties, results, and findings",
+        "Produces a report (report.html or equivalent returned report) containing: verdict with bounds, per-finding trace mapped to code, what was verified, assumptions/scope, trust base, and re-run commands",
+        "Report renders the order state machine as an inline diagram (SVG) with the illegal paid->cancelled transition highlighted",
+        "Every check the report claims (model runs, sanity checks, coverage, mapping check, test runs before/after) has a saved log file in the repo; nothing is claimed without a log"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "rust-pool-capacity-and-hang",
+      "prompt": "Our connection pool in src/lib.rs sometimes goes over max connections under load, and every so often a request thread hangs forever in acquire(). Can you model it formally, find out why, and fix it?",
+      "fixture": "rust-pool",
+      "expected_output": "Finds (1) check-then-act on in_use across two separate lock acquisitions -> more than max checked out (safety, invariant violation), and (2) lost wakeup: acquire checks then re-locks and waits (notification can land between), and release notifies before decrementing -> waiter sleeps forever (deadlock/liveness). Fix: one mutex guarding the count (and idle list), check-and-increment under one guard, while-loop condvar wait on that same guard, decrement then notify. Re-verifies safety and deadlock-freedom/liveness; adds a Rust regression test (threads + barriers, or loom/shuttle if available); cargo test passes; HTML report.",
+      "assertions": [
+        "Identifies the capacity race: in_use is checked and incremented under two separate lock acquisitions, so more than max connections can be checked out",
+        "Identifies the lost-wakeup/hang: the waiter re-locks and waits after checking (notification can land in between) and/or release notifies before decrementing",
+        "A model checker or prover was run and produced counterexamples for both the capacity violation (safety) and the hang (deadlock or liveness)",
+        "Fix uses a single mutex guarding the count (check-and-increment under one guard) and a while-loop Condvar wait on that same guard, with decrement before notify",
+        "Re-verifies the fixed model for both safety (<= max) and absence of the hang (deadlock-freedom or liveness)",
+        "Adds a Rust concurrency regression test and cargo test passes after the fix",
+        "States explicit model bounds (e.g. number of actors/deliveries/workers/nodes) for every model-checking result, and distinguishes bounded results from unbounded proofs",
+        "Ran a sanity/non-vacuity check on the FIXED (or simplified) model itself \u2014 a must-fail invariant, reachability witness, or coverage run, not just a bug toggle \u2014 and saved its tool output",
+        "Mutation/bug-toggle check: the target property FAILS on the unfixed model and PASSES on the fixed one at the SAME bounds, with saved tool output for both",
+        "Provides a model-to-code mapping (model actions/functions linked to specific file:line locations in the repo)",
+        "Produces a machine-readable findings file (e.g. formal/findings.json) describing properties, results, and findings",
+        "Produces a report (report.html or equivalent returned report) containing: verdict with bounds, per-finding trace mapped to code, what was verified, assumptions/scope, trust base, and re-run commands",
+        "Every check the report claims (model runs, sanity checks, coverage, mapping check, test runs before/after) has a saved log file in the repo; nothing is claimed without a log"
+      ]
+    }
+  ]
+}

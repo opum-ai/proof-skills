@@ -1,0 +1,82 @@
+[
+  {
+    "query": "we have a TLA+ model of our job leasing that passes. there's a lot of defensive code in worker/lease.go \u2014 double checks of ownership, a second lock. can we use the model to delete what's redundant?",
+    "should_trigger": true
+  },
+  {
+    "query": "do we still need the mutex in CacheWarmer.refresh()? the spec in formal/cache/ says only the scheduler thread ever calls it",
+    "should_trigger": true
+  },
+  {
+    "query": "cancel_order has a row lock, a conditional update and a post check. use formal methods to figure out what we can safely remove",
+    "should_trigger": true
+  },
+  {
+    "query": "our Lean proof shows the `pending` and `queued` states behave identically \u2014 can we merge them in the OrderStatus enum and delete the transitions between them?",
+    "should_trigger": true
+  },
+  {
+    "query": "the invariant says claimed_by is non-null iff status == CLAIMED. can we encode that in the types and delete the runtime checks scattered around jobs/*.py?",
+    "should_trigger": true
+  },
+  {
+    "query": "simplify the retry loop in sync/replicator.ts \u2014 I think half the branches can't happen but I want proof before I delete anything",
+    "should_trigger": true
+  },
+  {
+    "query": "after the bug hunt last week our webhook handler has both a dedup claim and an idempotency key. the model says the key alone is enough \u2014 should we remove the claim and how do we prove it's safe",
+    "should_trigger": true
+  },
+  {
+    "query": "is the `if already_applied: return` guard in apply_migration() dead code given the proven invariant in formal/migrations/Properties.lean?",
+    "should_trigger": true
+  },
+  {
+    "query": "refactor this 400 line function into smaller functions, keep behavior identical",
+    "should_trigger": false
+  },
+  {
+    "query": "remove unused imports and dead functions across the repo \u2014 just use the linter",
+    "should_trigger": false
+  },
+  {
+    "query": "simplify this SQL query, it has three nested subqueries",
+    "should_trigger": false
+  },
+  {
+    "query": "delete the feature flag `new_checkout` and its code paths, it's been at 100% for months",
+    "should_trigger": false
+  },
+  {
+    "query": "find race conditions in our payment processor",
+    "should_trigger": false
+  },
+  {
+    "query": "write a TLA+ spec for our cache",
+    "should_trigger": false
+  },
+  {
+    "query": "make this Python code more idiomatic and shorter",
+    "should_trigger": false
+  },
+  {
+    "query": "our CI is slow, which tests can we delete?",
+    "should_trigger": false
+  },
+  {
+    "query": "prove my sorting function is correct in Lean",
+    "should_trigger": false
+  },
+  {
+    "query": "clean up the error handling in api/handlers.go, there's too much copy paste",
+    "should_trigger": false
+  },
+  {
+    "query": "is it safe to remove the retry around the S3 upload? we've never seen it fail",
+    "should_trigger": false
+  },
+  {
+    "query": "reduce the number of locks in our Java connection pool for performance \u2014 benchmark it",
+    "should_trigger": false
+  }
+]

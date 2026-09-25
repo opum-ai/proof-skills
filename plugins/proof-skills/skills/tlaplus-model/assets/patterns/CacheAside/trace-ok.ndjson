@@ -1,0 +1,4 @@
+{"event":"miss","actor":"r1","val":0}
+{"event":"write","val":1}
+{"event":"inval"}
+{"event":"fill","actor":"r1","cache":0}

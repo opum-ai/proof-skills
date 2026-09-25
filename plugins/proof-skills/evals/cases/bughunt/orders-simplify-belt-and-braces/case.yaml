@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: bughunt-orders-simplify-belt-and-braces
+expected_outcome: 'Models current code (lock + CAS + post-check) and the webhook path that never takes the lock. Shows the lock alone does not prevent paid->cancelled and CAS alone suffices (lock removable), the post-check is dead because cancelled is terminal, and the ''changed concurrently'' branch is reachable (keep). Proves the simplified version preserves the transition property (re-check and/or refinement), applies the simplification, keeps tests green, and reports simplifications with justifications and assumptions.'
+context:
+  scaffold_script: scaffold.sh

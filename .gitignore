@@ -1,0 +1,8 @@
+evals-workspace/
+.tlc-out/
+.lake/
+*_TTrace_*
+__pycache__/
+.DS_Store
+states/
+plugins/proof-skills/evals/results/
